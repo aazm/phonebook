@@ -8,6 +8,7 @@
 
 namespace App\Services;
 
+use App\Helpers\DataSet;
 use App\Record;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -23,18 +24,25 @@ class RecordsService implements RecordsServiceInterface
         $this->maxPageSize = $maxPageSize;
     }
 
-    public function read(int $page = 0, int $size = 100, ?string $name): ?Collection
+    public function read(int $page = 1, int $size = 100, ?string $name): DataSet
     {
         if($page < 1) throw new \InvalidArgumentException('Page cannot be less that 1');
         if($size > $this->maxPageSize) throw new \InvalidArgumentException('Page size cannot be greater '.$this->maxPageSize);
 
-        $builder = Record::skip(($page - 1) * $size)->take($size);
+
+        $builder = (new Record())->newModelQuery();
 
         if($name) {
-            $builder->where('subscriber', 'like', $name);
+            $builder->where('subscriber', 'like', $name );
         }
 
-        return $builder->get();
+        $total = $builder->count();
+
+        if(!$total) return DataSet::create(0, collect());
+
+        $builder->skip(($page - 1) * $size)->take($size);
+        return DataSet::create($total, $builder->get());
+
     }
 
     public function show(int $id): ?Record

@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
+use App\Helpers\DataSet;
 use App\Record;
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 
@@ -18,7 +18,7 @@ interface RecordsServiceInterface
      * @param array $filters
      * @return Collection|null
      */
-    public function read(int $page = 0, int $size = 100, ?string $name): ?Collection;
+    public function read(int $page = 1, int $size = 100, ?string $name): DataSet;
 
 
     /**

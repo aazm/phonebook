@@ -15,16 +15,16 @@ class RecordsServiceTest extends TestCase
     {
         /** @var \App\Services\RecordsServiceInterface $service */
         $service = resolve(RecordsServiceInterface::class);
-        $collection = $service->read(1, 10, null);
-        $this->assertEquals(10, $collection->count());
+        $dataset = $service->read(1, 10, null);
+        $this->assertEquals(10, $dataset->getItems()->count());
     }
 
     public function testPageChangesDiffersResult()
     {
         /** @var \App\Services\RecordsServiceInterface $service */
         $service = resolve(RecordsServiceInterface::class);
-        $first = $service->read(1, 1, null)->first();
-        $second = $service->read(2, 1, null)->first();
+        $first = $service->read(1, 1, null)->getItems()->first();
+        $second = $service->read(2, 1, null)->getItems()->first();
 
         $this->assertNotEquals($first->toArray(), $second->toArray());
 
@@ -53,7 +53,7 @@ class RecordsServiceTest extends TestCase
         $record = factory(Record::class)->create();
 
         $service = resolve(RecordsServiceInterface::class);
-        $collection = $service->read(1, 1, $record->subscriber)->pluck('id');
+        $collection = $service->read(1, 1, $record->subscriber)->getItems()->pluck('id');
 
         $this->assertContains($record->getKey(), $collection->toArray());
 
