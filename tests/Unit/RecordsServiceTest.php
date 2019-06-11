@@ -72,21 +72,16 @@ class RecordsServiceTest extends TestCase
         $record->delete();
     }
 
-
-
-    /*    public function testOffsetGreaterRecordsCountThrowsException()
-        {
-
-        }
-    */
-
-
-    /*
     public function testShowReturnsRequestedId()
     {
+        $record = factory(Record::class)->create();
+        $service = resolve(RecordsServiceInterface::class);
+        $received = $service->show($record->getKey());
 
+        $this->assertEquals($record->getKey(), $received->getKey());
     }
 
+    /*
     public function testShowMissingIdReturnsNull()
     {
 
@@ -116,5 +111,12 @@ class RecordsServiceTest extends TestCase
     {
 
     }*/
+
+
+    /*    public function testOffsetGreaterRecordsCountThrowsException()
+    {
+
+    }
+*/
 
 }

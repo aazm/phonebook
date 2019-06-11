@@ -43,13 +43,13 @@ class RecordsService implements RecordsServiceInterface
         if(!$total) return DataSet::create(0, collect());
 
         $builder->skip(($page - 1) * $size)->take($size);
-        return DataSet::create($total, $builder->get());
 
+        return DataSet::create($total, $builder->get());
     }
 
     public function show(int $id): ?Record
     {
-        // TODO: Implement show() method.
+        return Record::find($id);
     }
 
     public function create(array $data): Record
