@@ -65,7 +65,7 @@ class RecordsServiceTest extends TestCase
         $record = factory(Record::class)->create();
 
         $service = resolve(RecordsServiceInterface::class);
-        $collection = $service->read(1, null, substr($record->subscriber, 0, 1))->getItems()->pluck('id');
+        $collection = $service->read(1, config('phonebook.max_page_size'), substr($record->subscriber, 0, 1))->getItems()->pluck('id');
 
         $this->assertContains($record->getKey(), $collection->toArray());
 
@@ -92,12 +92,18 @@ class RecordsServiceTest extends TestCase
 
     }
 
-    /*
     public function testUpdateChangePhoneNumber()
     {
+        $record = factory(Record::class)->create();
+        $service = resolve(RecordsServiceInterface::class);
 
+        $newName = \Faker\Factory::create()->name;
+        $received = $service->update($record->getKey(), ['subscriber' => $newName]);
+
+        $this->assertEquals($newName, $received->subscriber);
     }
 
+    /*
     public function testUpdateSubscriberNumber()
     {
 

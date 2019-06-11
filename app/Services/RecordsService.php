@@ -59,7 +59,10 @@ class RecordsService implements RecordsServiceInterface
 
     public function update(int $id, array $data): Record
     {
-        // TODO: Implement update() method.
+        $record = Record::findOrFail($id);
+        $record->update($data);
+
+        return $record;
     }
 
     public function delete(int $id): bool
