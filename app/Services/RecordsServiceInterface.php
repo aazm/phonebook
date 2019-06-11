@@ -46,6 +46,7 @@ interface RecordsServiceInterface
      * @param array $data
      * @return Record
      * @throws ModelNotFoundException
+     * @throws QueryException
      */
     public function update(int $id, array $data): Record;
 

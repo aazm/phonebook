@@ -4,9 +4,11 @@ namespace Tests\Unit;
 
 use App\Record;
 use App\Services\RecordsServiceInterface;
+use Illuminate\Database\QueryException;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Arr;
 
 class RecordsServiceTest extends TestCase
 {
@@ -116,12 +118,21 @@ class RecordsServiceTest extends TestCase
 
     }
 
-    /*
     public function testUpdateOnExistingRecordFails()
     {
+        $origin = factory(Record::class)->create();
+        $changing = factory(Record::class)->create();
 
+        $this->expectException(QueryException::class);
+
+        $service = resolve(RecordsServiceInterface::class);
+        $service->update($changing->getKey(), Arr::only($origin->toArray(),['subscriber', 'phone']));
+
+        $origin->delete();
+        $changing->delete();
     }
 
+    /*
     public function testDeleteExistingReturnsTrue()
     {
 
