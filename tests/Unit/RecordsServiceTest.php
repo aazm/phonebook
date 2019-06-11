@@ -132,16 +132,22 @@ class RecordsServiceTest extends TestCase
         $changing->delete();
     }
 
-    /*
     public function testDeleteExistingReturnsTrue()
     {
+        $removing = factory(Record::class)->create();
+        $service = resolve(RecordsServiceInterface::class);
+        $result = $service->delete($removing->getKey());
 
+        $this->assertTrue($result);
     }
 
     public function testDeleteMissingReturnsFalse()
     {
+        $service = resolve(RecordsServiceInterface::class);
+        $result = $service->delete(PHP_INT_MAX);
 
-    }*/
+        $this->assertFalse($result);
+    }
 
 
     /*    public function testOffsetGreaterRecordsCountThrowsException()
