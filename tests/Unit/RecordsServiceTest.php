@@ -79,14 +79,20 @@ class RecordsServiceTest extends TestCase
         $received = $service->show($record->getKey());
 
         $this->assertEquals($record->getKey(), $received->getKey());
+
+        $record->delete();
+    }
+
+    public function testShowMissingIdReturnsNull()
+    {
+        $service = resolve(RecordsServiceInterface::class);
+        $received = $service->show(PHP_INT_MAX);
+
+        $this->assertNull($received);
+
     }
 
     /*
-    public function testShowMissingIdReturnsNull()
-    {
-
-    }
-
     public function testUpdateChangePhoneNumber()
     {
 
