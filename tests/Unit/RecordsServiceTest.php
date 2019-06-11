@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Record;
 use App\Services\RecordsServiceInterface;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -46,17 +47,29 @@ class RecordsServiceTest extends TestCase
 
     }
 
-    /*
-    public function testOffsetGreaterRecordsCountThrowsException()
-    {
-
-    }
 
     public function testPartialNameFilterReturnsRelativeCollection()
     {
+        $record = factory(Record::class)->create();
 
+        $service = resolve(RecordsServiceInterface::class);
+        $collection = $service->read(1, 1, $record->subscriber)->pluck('id');
+
+        $this->assertContains($record->getKey(), $collection->toArray());
+
+        $record->delete();
     }
 
+
+
+    /*    public function testOffsetGreaterRecordsCountThrowsException()
+        {
+
+        }
+    */
+
+
+    /*
     public function testShowReturnsRequestedId()
     {
 

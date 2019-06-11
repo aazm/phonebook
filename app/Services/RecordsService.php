@@ -26,8 +26,15 @@ class RecordsService implements RecordsServiceInterface
     public function read(int $page = 0, int $size = 100, ?string $name): ?Collection
     {
         if($page < 1) throw new \InvalidArgumentException('Page cannot be less that 1');
+        if($size > $this->maxPageSize) throw new \InvalidArgumentException('Page size cannot be greater '.$this->maxPageSize);
 
-        return Record::skip(($page - 1) * $size)->take($size)->get();
+        $builder = Record::skip(($page - 1) * $size)->take($size);
+
+        if($name) {
+            $builder->where('subscriber', 'like', $name);
+        }
+
+        return $builder->get();
     }
 
     public function show(int $id): ?Record
