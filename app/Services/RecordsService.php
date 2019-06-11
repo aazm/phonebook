@@ -54,7 +54,7 @@ class RecordsService implements RecordsServiceInterface
 
     public function create(array $data): Record
     {
-        // TODO: Implement create() method.
+        return Record::firstOrCreate($data);
     }
 
     public function update(int $id, array $data): Record

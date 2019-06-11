@@ -149,11 +149,31 @@ class RecordsServiceTest extends TestCase
         $this->assertFalse($result);
     }
 
-
-    /*    public function testOffsetGreaterRecordsCountThrowsException()
+    public function testCreateNewReturnsSameData()
     {
+        $new = factory(Record::class)->make();
+        $service = resolve(RecordsServiceInterface::class);
 
+        $subscriber = $new->subscriber;
+        $phone = $new->phone;
+
+        $created = $service->create(compact('subscriber', 'phone'));
+
+        $this->assertEquals($new->subscriber, $created->subscriber);
+        $this->assertEquals($new->phone, $created->phone);
     }
-*/
+
+    public function testCreateWithExistingReturnsItself()
+    {
+        $new = factory(Record::class)->create();
+        $service = resolve(RecordsServiceInterface::class);
+
+        $subscriber = $new->subscriber;
+        $phone = $new->phone;
+
+        $created = $service->create(compact('subscriber', 'phone'));
+
+        $this->assertEquals($new->getKey(), $created->getKey());
+    }
 
 }

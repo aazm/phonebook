@@ -29,11 +29,10 @@ interface RecordsServiceInterface
      */
     public function show(int $id): ?Record;
     /**
-     * Creates Record by given input.
+     * Creates Record by given input or returns existing.
      *
      * @param array $data
      * @return Record
-     * @throws QueryException
      */
     public function create(array $data): Record;
 
