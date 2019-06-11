@@ -65,7 +65,8 @@ class RecordsServiceTest extends TestCase
         $record = factory(Record::class)->create();
 
         $service = resolve(RecordsServiceInterface::class);
-        $collection = $service->read(1, config('phonebook.max_page_size'), substr($record->subscriber, 0, 1))->getItems()->pluck('id');
+        $partName =  substr($record->subscriber, 0, -2);
+        $collection = $service->read(1, config('phonebook.max_page_size'), $partName)->getItems()->pluck('id');
 
         $this->assertContains($record->getKey(), $collection->toArray());
 
