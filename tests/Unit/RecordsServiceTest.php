@@ -104,12 +104,19 @@ class RecordsServiceTest extends TestCase
         $this->assertEquals($newName, $received->subscriber);
     }
 
-    /*
     public function testUpdateSubscriberNumber()
     {
+        $record = factory(Record::class)->create();
+        $service = resolve(RecordsServiceInterface::class);
+
+        $newPhone = \Faker\Factory::create()->phoneNumber;
+        $received = $service->update($record->getKey(), ['phone' => $newPhone]);
+
+        $this->assertEquals($newPhone, $received->phone);
 
     }
 
+    /*
     public function testUpdateOnExistingRecordFails()
     {
 
