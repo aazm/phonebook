@@ -32,16 +32,21 @@ class RecordsServiceTest extends TestCase
     public function testLessFirstPageNumThrowsException()
     {
         $this->expectException(\InvalidArgumentException::class);
-
         $service = resolve(RecordsServiceInterface::class);
         $service->read(0, 1, null);
     }
-/*
+
     public function testPageMaxSizeGreaterFromConfigThrowsException()
     {
+        $maxPageSize = config('phonebook.max_page_size');
+
+        $this->expectException(\InvalidArgumentException::class);
+        $service = resolve(RecordsServiceInterface::class);
+        $service->read(1, $maxPageSize + 1, null);
 
     }
 
+    /*
     public function testOffsetGreaterRecordsCountThrowsException()
     {
 

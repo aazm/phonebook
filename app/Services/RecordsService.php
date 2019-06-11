@@ -15,6 +15,14 @@ use Illuminate\Database\QueryException;
 
 class RecordsService implements RecordsServiceInterface
 {
+
+    private $maxPageSize;
+
+    public function __construct(int $maxPageSize)
+    {
+        $this->maxPageSize = $maxPageSize;
+    }
+
     public function read(int $page = 0, int $size = 100, ?string $name): ?Collection
     {
         if($page < 1) throw new \InvalidArgumentException('Page cannot be less that 1');
