@@ -24,8 +24,10 @@ class RecordsService implements RecordsServiceInterface
         $this->maxPageSize = $maxPageSize;
     }
 
-    public function read(int $page = 1, int $size = 100, ?string $name): DataSet
+    public function read(int $page = 1, ?int $size = null, ?string $name): DataSet
     {
+        $size = $size ?? config('phonebook.default_page_size');
+
         if($page < 1) throw new \InvalidArgumentException('Page cannot be less that 1');
         if($size > $this->maxPageSize) throw new \InvalidArgumentException('Page size cannot be greater '.$this->maxPageSize);
 
@@ -33,7 +35,7 @@ class RecordsService implements RecordsServiceInterface
         $builder = (new Record())->newModelQuery();
 
         if($name) {
-            $builder->where('subscriber', 'like', $name );
+            $builder->where('subscriber', 'like', $name.'%');
         }
 
         $total = $builder->count();

@@ -48,12 +48,24 @@ class RecordsServiceTest extends TestCase
     }
 
 
-    public function testPartialNameFilterReturnsRelativeCollection()
+    public function testNameFilterReturnsRelativeCollection()
     {
         $record = factory(Record::class)->create();
 
         $service = resolve(RecordsServiceInterface::class);
         $collection = $service->read(1, 1, $record->subscriber)->getItems()->pluck('id');
+
+        $this->assertContains($record->getKey(), $collection->toArray());
+
+        $record->delete();
+    }
+
+    public function testPartialNameFilterReturnsRelativeCollection()
+    {
+        $record = factory(Record::class)->create();
+
+        $service = resolve(RecordsServiceInterface::class);
+        $collection = $service->read(1, null, substr($record->subscriber, 0, 1))->getItems()->pluck('id');
 
         $this->assertContains($record->getKey(), $collection->toArray());
 
