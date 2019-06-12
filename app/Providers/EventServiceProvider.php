@@ -21,6 +21,9 @@ class EventServiceProvider extends ServiceProvider
 
         'App\Events\BookUpdatedEvent' => [
             'App\Listeners\ExportBookListener'
+        ],
+        'App\Events\ExportFileUpdatedEvent' => [
+            'App\Listeners\GatherStatisticsListener',
         ]
     ];
 
