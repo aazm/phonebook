@@ -20,7 +20,6 @@ interface RecordsServiceInterface
      */
     public function read(int $page = 1, int $size = 100, ?string $name): DataSet;
 
-
     /**
      * Return record by id
      *
@@ -28,6 +27,7 @@ interface RecordsServiceInterface
      * @return Record|null
      */
     public function show(int $id): ?Record;
+
     /**
      * Creates Record by given input or returns existing.
      *

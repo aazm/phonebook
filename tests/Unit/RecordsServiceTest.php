@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Events\BookUpdatedEvent;
 use App\Record;
 use App\Services\RecordsServiceInterface;
 use Illuminate\Database\QueryException;
@@ -161,6 +162,8 @@ class RecordsServiceTest extends TestCase
 
         $this->assertEquals($new->subscriber, $created->subscriber);
         $this->assertEquals($new->phone, $created->phone);
+
+        $created->delete();
     }
 
     public function testCreateWithExistingReturnsItself()
@@ -174,6 +177,40 @@ class RecordsServiceTest extends TestCase
         $created = $service->create(compact('subscriber', 'phone'));
 
         $this->assertEquals($new->getKey(), $created->getKey());
+
+        $created->delete();
+    }
+
+    public function testCreateRecordFiresChangedEvent()
+    {
+        $new = factory(Record::class)->make();
+        $service = resolve(RecordsServiceInterface::class);
+
+        $this->expectsEvents(BookUpdatedEvent::class);
+
+        $subscriber = $new->subscriber;
+        $phone = $new->phone;
+
+        $created = $service->create(compact('subscriber', 'phone'));
+
+        $created->delete();
+
+    }
+
+    public function testCreateExistingRecordDoesnotFiresChangedEvent()
+    {
+        $new = factory(Record::class)->create();
+        $service = resolve(RecordsServiceInterface::class);
+
+        $this->doesntExpectEvents(BookUpdatedEvent::class);
+
+        $subscriber = $new->subscriber;
+        $phone = $new->phone;
+
+        $created = $service->create(compact('subscriber', 'phone'));
+
+        $created->delete();
+
     }
 
 }

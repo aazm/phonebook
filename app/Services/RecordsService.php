@@ -8,6 +8,7 @@
 
 namespace App\Services;
 
+use App\Events\BookUpdatedEvent;
 use App\Helpers\DataSet;
 use App\Record;
 use Illuminate\Support\Collection;
@@ -54,7 +55,13 @@ class RecordsService implements RecordsServiceInterface
 
     public function create(array $data): Record
     {
-        return Record::firstOrCreate($data);
+        $record =  Record::firstOrCreate($data);
+
+        if($record->wasRecentlyCreated) {
+            event(new BookUpdatedEvent());
+        }
+
+        return $record;
     }
 
     public function update(int $id, array $data): Record
