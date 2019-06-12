@@ -75,7 +75,6 @@ class RecordsService implements RecordsServiceInterface
             event(new BookUpdatedEvent());
         }
 
-
         return $record;
     }
 

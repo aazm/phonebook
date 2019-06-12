@@ -35,10 +35,10 @@ class ExchangeService implements ExchangeServiceInterface
 
         if (!$builder->count()) return false;
 
-        fputcsv($handler, ['id', 'subscriber', 'phone'], ';');
+        fputcsv($handler, ['id', 'subscriber', 'phone']);
 
         foreach ($builder->cursor() as $record) {
-            fputcsv($handler, $record->toArray(), ';');
+            fputcsv($handler, $record->toArray());
         }
 
         fclose($handler);
@@ -66,7 +66,25 @@ class ExchangeService implements ExchangeServiceInterface
 
     public function sync(string $filename)
     {
+        $handler = fopen(storage_path('app/'.$filename), 'r');
 
+        //skip header
+        fgetcsv($handler);
+
+        while ($row = fgetcsv($handler)) {
+            [$id, $subscriber, $phone] = $row;
+
+            switch (true) {
+                case !$id:
+                    Record::create(compact('subscriber', 'phone'));
+                    break;
+                case !$subscriber && !$phone:
+                    Record::destroy($id);
+                    break;
+                default:
+                    Record::where('id', $id)->update(compact('subscriber', 'phone'));
+            }
+        }
     }
 
 }
