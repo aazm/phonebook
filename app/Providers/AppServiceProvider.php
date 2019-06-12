@@ -2,7 +2,8 @@
 
 namespace App\Providers;
 
-
+use App\Services\ExchangeServiceInterface;
+use App\Services\Impl\ExchangeService;
 use App\Services\Impl\MetaService;
 use App\Services\MetaServiceInterface;
 use App\Services\Impl\RecordsService;
@@ -24,6 +25,10 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(MetaServiceInterface::class, function($app){
             return new MetaService(config('phonebook.max_page_size'), config('phonebook.filename'));
+        });
+
+        $this->app->bind(ExchangeServiceInterface::class, function($app){
+            return new ExchangeService(config('phonebook.filename'));
         });
     }
 
