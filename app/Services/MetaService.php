@@ -48,8 +48,8 @@ class MetaService implements MetaServiceInterface
             'records_count' => Record::count(),
             'page_max_size' => $this->maxPageSize,
             'filename' => $this->filename,
-            'file_size' => 0,
-            'updated_at' => 0,
+            'file_size' => Storage::disk('local')->size($path),
+            'updated_at' => \Carbon\Carbon::now(),
         ];
 
         Cache::put(self::CACHE_KEY, $meta, now()->addMinutes(10));
