@@ -219,4 +219,29 @@ class RecordsServiceTest extends TestCase
 
     }
 
+    public function testUpdateFiresChangedEvent()
+    {
+        $record = factory(Record::class)->create();
+        $service = resolve(RecordsServiceInterface::class);
+
+        $this->expectsEvents(BookUpdatedEvent::class);
+
+        $newPhone = \Faker\Factory::create()->phoneNumber;
+        $service->update($record->getKey(), ['phone' => $newPhone]);
+
+        $record->delete();
+    }
+
+    public function testUpdateOnTheSameDoesntFiresChangedEvent()
+    {
+        $record = factory(Record::class)->create();
+        $service = resolve(RecordsServiceInterface::class);
+
+        $this->doesntExpectEvents(BookUpdatedEvent::class);
+
+        $service->update($record->getKey(), ['phone' => $record->phone]);
+
+        $record->delete();
+    }
+
 }

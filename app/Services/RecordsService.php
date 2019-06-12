@@ -67,7 +67,13 @@ class RecordsService implements RecordsServiceInterface
     public function update(int $id, array $data): Record
     {
         $record = Record::findOrFail($id);
-        $record->update($data);
+        $record->fill($data);
+
+        $dirty = $record->getDirty();
+        if($record->save() && $dirty) {
+            event(new BookUpdatedEvent());
+        }
+
 
         return $record;
     }
