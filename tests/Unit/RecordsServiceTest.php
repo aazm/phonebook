@@ -79,6 +79,7 @@ class RecordsServiceTest extends TestCase
     public function testShowReturnsRequestedId()
     {
         $record = factory(Record::class)->create();
+
         $service = resolve(RecordsServiceInterface::class);
         $received = $service->show($record->getKey());
 
@@ -99,12 +100,16 @@ class RecordsServiceTest extends TestCase
     public function testUpdateChangePhoneNumber()
     {
         $record = factory(Record::class)->create();
+
         $service = resolve(RecordsServiceInterface::class);
 
         $newName = \Faker\Factory::create()->name;
         $received = $service->update($record->getKey(), ['subscriber' => $newName]);
 
         $this->assertEquals($newName, $received->subscriber);
+
+        $record->delete();
+
     }
 
     public function testUpdateSubscriberNumber()
@@ -117,6 +122,7 @@ class RecordsServiceTest extends TestCase
 
         $this->assertEquals($newPhone, $received->phone);
 
+        $record->delete();
     }
 
     public function testUpdateOnExistingRecordFails()
