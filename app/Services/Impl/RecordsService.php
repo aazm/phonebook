@@ -6,11 +6,12 @@
  * Time: 00:20
  */
 
-namespace App\Services;
+namespace App\Services\Impl;
 
 use App\Events\BookUpdatedEvent;
 use App\Helpers\DataSet;
 use App\Record;
+use App\Services\RecordsServiceInterface;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;

@@ -2,9 +2,10 @@
 
 namespace App\Providers;
 
-use App\Services\MetaService;
+
+use App\Services\Impl\MetaService;
 use App\Services\MetaServiceInterface;
-use App\Services\RecordsService;
+use App\Services\Impl\RecordsService;
 use App\Services\RecordsServiceInterface;
 use Illuminate\Support\ServiceProvider;
 
