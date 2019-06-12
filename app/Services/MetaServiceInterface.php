@@ -8,11 +8,20 @@
 
 namespace App\Services;
 
-interface BookIndexServiceInterface
+interface MetaServiceInterface
 {
-    public function gather(): bool;
+    /**
+     * Refreshes meta information.
+     *
+     * @return bool
+     */
+    public function gather(): void;
 
+    /**
+     * Provides meta information.
+     *
+     * @return array
+     */
     public function get(): array;
-
 
 }

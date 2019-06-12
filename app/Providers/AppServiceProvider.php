@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\MetaService;
+use App\Services\MetaServiceInterface;
 use App\Services\RecordsService;
 use App\Services\RecordsServiceInterface;
 use Illuminate\Support\ServiceProvider;
@@ -17,6 +19,10 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(RecordsServiceInterface::class, function($app){
             return new RecordsService(config('phonebook.max_page_size'));
+        });
+
+        $this->app->bind(MetaServiceInterface::class, function($app){
+            return new MetaService(config('phonebook.max_page_size'), config('phonebook.filename'));
         });
     }
 
