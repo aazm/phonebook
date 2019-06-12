@@ -2,19 +2,23 @@
 
 namespace Tests\Unit;
 
+use App\Services\MetaServiceInterface;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class MetaTest extends TestCase
 {
-    /**
-     * A basic unit test example.
-     *
-     * @return void
-     */
-    public function testExample()
+
+    public function testMetaContainsKeys()
     {
-        $this->assertTrue(true);
+        $service = resolve(MetaServiceInterface::class);
+        $data = $service->get();
+
+        $this->assertArrayHasKey('records_count', $data);
+        $this->assertArrayHasKey('page_max_size', $data);
+        $this->assertArrayHasKey('file_size', $data);
+        $this->assertArrayHasKey('updated_at', $data);
+
     }
 }
