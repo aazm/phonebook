@@ -244,4 +244,24 @@ class RecordsServiceTest extends TestCase
         $record->delete();
     }
 
+    public function testDeleteExistingFiresChangedEvent()
+    {
+        $removing = factory(Record::class)->create();
+
+        $this->expectsEvents(BookUpdatedEvent::class);
+
+        $service = resolve(RecordsServiceInterface::class);
+        $service->delete($removing->getKey());
+
+    }
+
+    public function testDeleteMissingDoesnotFiresChangedEvent()
+    {
+
+        $this->doesntExpectEvents(BookUpdatedEvent::class);
+        
+        $service = resolve(RecordsServiceInterface::class);
+        $service->delete(PHP_INT_MAX);
+    }
+
 }

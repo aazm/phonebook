@@ -80,6 +80,11 @@ class RecordsService implements RecordsServiceInterface
 
     public function delete(int $id): bool
     {
-        return Record::destroy($id);
+        $result = (bool) Record::destroy($id);
+        if($result) {
+            event(new BookUpdatedEvent());
+        }
+
+        return $result;
     }
 }
