@@ -9,7 +9,10 @@
 namespace App\Services;
 
 use App\Record;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 
 class MetaService implements MetaServiceInterface
 {
@@ -26,7 +29,7 @@ class MetaService implements MetaServiceInterface
 
     public function get(): array
     {
-        if(!Cache::has(self::CACHE_KEY)) {
+        if (!Cache::has(self::CACHE_KEY)) {
             $this->gather();
         }
 
@@ -35,6 +38,12 @@ class MetaService implements MetaServiceInterface
 
     public function gather(): void
     {
+        $path = storage_path('app/' . $this->filename);
+
+        if (!Storage::exists($path)) {
+            throw new FileNotFoundException('missing file ' . $this->filename);
+        }
+
         $meta = [
             'records_count' => Record::count(),
             'page_max_size' => $this->maxPageSize,

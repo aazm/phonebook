@@ -3,13 +3,40 @@
 namespace Tests\Unit;
 
 use App\Services\MetaServiceInterface;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class MetaTest extends TestCase
 {
+
+    private $filepath;
+
+    //todo: read more docs to be sure that working properly
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $filename = \config('phonebook.filename');
+
+        $this->filepath = storage_path('app/'.$filename);
+
+        Storage::fake()
+            ->put($this->filepath, UploadedFile::fake()->create($filename));
+
+    }
+
+    protected function tearDown(): void
+    {
+        Storage::fake()->delete($this->filepath);
+
+        parent::tearDown();
+    }
 
     public function testMetaContainsKeys()
     {
@@ -27,6 +54,17 @@ class MetaTest extends TestCase
         $service = resolve(MetaServiceInterface::class);
 
         Cache::shouldReceive('put')->once();
+        $service->gather();
+    }
+
+    public function testGatherFileNotFoundThrowsException()
+    {
+        $service = resolve(MetaServiceInterface::class);
+
+        $this->expectException(FileNotFoundException::class);
+
+        Storage::fake()->delete($this->filepath);
+
         $service->gather();
     }
 }

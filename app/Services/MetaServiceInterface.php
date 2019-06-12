@@ -8,11 +8,14 @@
 
 namespace App\Services;
 
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
+
 interface MetaServiceInterface
 {
     /**
      * Refreshes meta information.
      *
+     * @throws FileNotFoundException
      * @return bool
      */
     public function gather(): void;
