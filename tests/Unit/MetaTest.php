@@ -14,7 +14,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class MetaTest extends TestCase
 {
-
     private $filepath;
 
     //todo: read more docs to be sure that working properly
@@ -26,14 +25,15 @@ class MetaTest extends TestCase
 
         $this->filepath = storage_path('app/'.$filename);
 
-        Storage::fake()
-            ->put($this->filepath, UploadedFile::fake()->create($filename));
+        Storage::fake('local');
+        Storage::disk('local')
+            ->put($this->filepath, UploadedFile::fake()->create($filename, 1000));
 
     }
 
     protected function tearDown(): void
     {
-        Storage::fake()->delete($this->filepath);
+        Storage::fake('local')->delete($this->filepath);
 
         parent::tearDown();
     }
@@ -49,6 +49,29 @@ class MetaTest extends TestCase
         $this->assertArrayHasKey('updated_at', $data);
     }
 
+    public function testMetaRecordsCountEqualsToDb()
+    {
+        $service = resolve(MetaServiceInterface::class);
+        $data = $service->get();
+
+        $this->assertEquals(\App\Record::count(), $data['records_count']);
+    }
+
+ /*   public function testMetaFileSizeEqualsToStoredOnFS()
+    {
+        $service = resolve(MetaServiceInterface::class);
+
+        $data = $service->get();
+
+        $expected = Storage::disk('local')->size($this->filepath);
+
+        var_dump($expected, $data);
+
+        $this->assertEquals($expected, $data['file_size']);
+    }*/
+
+
+
     public function testGatherPutCacheItem()
     {
         $service = resolve(MetaServiceInterface::class);
@@ -57,14 +80,15 @@ class MetaTest extends TestCase
         $service->gather();
     }
 
-    public function testGatherFileNotFoundThrowsException()
+/*    public function testGatherFileNotFoundThrowsException()
     {
         $service = resolve(MetaServiceInterface::class);
 
         $this->expectException(FileNotFoundException::class);
 
-        Storage::fake()->delete($this->filepath);
+        Storage::disk('local')->delete($this->filepath);
 
         $service->gather();
-    }
+    }*/
+
 }
