@@ -7,5 +7,8 @@
  */
 
 return [
-    'max_page_size' => 25
+    'max_page_size' => 25,
+    'default_page_size' => 10,
+    'filename' => 'export.csv',
+    'filedir' => 'public'
 ];

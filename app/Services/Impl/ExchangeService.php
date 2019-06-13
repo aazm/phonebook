@@ -18,16 +18,16 @@ use Illuminate\Support\Facades\Storage;
 
 class ExchangeService implements ExchangeServiceInterface
 {
-    private $filename;
+    private $filepath;
 
-    public function __construct(string $filename)
+    public function __construct(string $filepath)
     {
-        $this->filename = $filename;
+        $this->filepath = $filepath;
     }
 
     public function export(): bool
     {
-        $tmpname = uniqid($this->filename);
+        $tmpname = uniqid($this->filepath);
         $path = storage_path('app/' . $tmpname);
         $handler = fopen($path, 'a');
 
@@ -43,11 +43,11 @@ class ExchangeService implements ExchangeServiceInterface
 
         fclose($handler);
 
-        if (Storage::exists('public/' . $this->filename)) {
-            Storage::delete('public/' . $this->filename);
+        if (Storage::exists($this->filepath)) {
+            Storage::delete($this->filepath);
         }
 
-        Storage::move($tmpname, 'public/' . $this->filename);
+        Storage::move($tmpname, $this->filepath);
 
         event(new ExportFileUpdatedEvent());
 
@@ -56,7 +56,7 @@ class ExchangeService implements ExchangeServiceInterface
 
     public function import(UploadedFile $file): string
     {
-        $name = uniqid('import').'.csv';
+        $name = uniqid('import') . '.csv';
         $file->move(storage_path('app'), $name);
 
         ImportCsvJob::dispatch($name);
@@ -66,7 +66,7 @@ class ExchangeService implements ExchangeServiceInterface
 
     public function sync(string $filename)
     {
-        $handler = fopen(storage_path('app/'.$filename), 'r');
+        $handler = fopen(storage_path('app/' . $filename), 'r');
 
         //skip header
         fgetcsv($handler);

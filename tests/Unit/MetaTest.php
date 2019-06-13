@@ -21,13 +21,13 @@ class MetaTest extends TestCase
     {
         parent::setUp();
 
-        $filename = \config('phonebook.filename');
+        $path = config('phonebook.filedir') . '/' . config('phonebook.filename');
 
-        $this->filepath = storage_path('app/'.$filename);
+        $this->filepath = storage_path('app/'.$path);
 
         Storage::fake('local');
         Storage::disk('local')
-            ->put($this->filepath, UploadedFile::fake()->create($filename, 1000));
+            ->put($this->filepath, UploadedFile::fake()->create(config('phonebook.filename'), 1000));
 
     }
 

@@ -24,11 +24,17 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->bind(MetaServiceInterface::class, function($app){
-            return new MetaService(config('phonebook.max_page_size'), config('phonebook.filename'));
+
+            $path = config('phonebook.filedir') . '/' . config('phonebook.filename');
+
+            return new MetaService(config('phonebook.max_page_size'), $path);
         });
 
         $this->app->bind(ExchangeServiceInterface::class, function($app){
-            return new ExchangeService(config('phonebook.filename'));
+
+            $path = config('phonebook.filedir') . '/' . config('phonebook.filename');
+
+            return new ExchangeService($path);
         });
     }
 
