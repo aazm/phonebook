@@ -56,6 +56,8 @@ class ExchangeServiceTest extends TestCase
 
         $builder->delete();
 
+        unlink(storage_path('app/import.csv'));
+
     }
 
     public function testUpdateStubUpdatesRecord()
@@ -74,6 +76,8 @@ class ExchangeServiceTest extends TestCase
         $this->assertEquals($record->subscriber, 'TESTNAME');
         $this->assertEquals($record->phone, '11111111');
 
+        unlink(storage_path('app/import.csv'));
+
     }
 
     public function testDeleteSyncRemovesRecord()
@@ -85,6 +89,8 @@ class ExchangeServiceTest extends TestCase
         $service->sync('import.csv');
 
         $this->assertEquals(0, Record::where('id', $fake->getKey())->count());
+
+        unlink(storage_path('app/import.csv'));
 
     }
 
