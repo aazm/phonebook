@@ -10,6 +10,8 @@ namespace App\Services\Impl;
 
 use App\Events\BookUpdatedEvent;
 use App\Helpers\DataSet;
+use App\Helpers\DataSetInterface;
+use App\Helpers\EmptyDataSet;
 use App\Record;
 use App\Services\RecordsServiceInterface;
 use Illuminate\Support\Collection;
@@ -26,7 +28,7 @@ class RecordsService implements RecordsServiceInterface
         $this->maxPageSize = $maxPageSize;
     }
 
-    public function read(int $page = 1, ?int $size = null, ?string $name): DataSet
+    public function read(int $page = 1, ?int $size = null, ?string $name): DataSetInterface
     {
         $size = $size ?? config('phonebook.default_page_size');
 
@@ -42,11 +44,11 @@ class RecordsService implements RecordsServiceInterface
 
         $total = $builder->count();
 
-        if(!$total) return DataSet::create(0, collect());
+        if(!$total) return new EmptyDataSet();
 
         $builder->skip(($page - 1) * $size)->take($size);
 
-        return DataSet::create($total, $builder->get());
+        return new DataSet($total, $builder->get());
     }
 
     public function show(int $id): ?Record

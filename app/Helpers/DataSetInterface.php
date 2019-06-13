@@ -2,13 +2,13 @@
 /**
  * Created by PhpStorm.
  * User: aborovkov
- * Date: 28/03/2019
- * Time: 15:56
+ * Date: 13/06/2019
+ * Time: 11:54
  */
 
 namespace App\Helpers;
 
-class EmptyDataSet implements DataSetInterface
+interface DataSetInterface
 {
 
 }

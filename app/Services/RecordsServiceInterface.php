@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Helpers\DataSet;
+use App\Helpers\DataSetInterface;
+use App\Helpers\EmptyDataSet;
 use App\Record;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
@@ -16,9 +18,9 @@ interface RecordsServiceInterface
      *
      * @throws \InvalidArgumentException
      * @param array $filters
-     * @return Collection|null
+     * @return DataSetInterface
      */
-    public function read(int $page = 1, int $size = 100, ?string $name): DataSet;
+    public function read(int $page = 1, int $size = 100, ?string $name): DataSetInterface;
 
     /**
      * Return record by id

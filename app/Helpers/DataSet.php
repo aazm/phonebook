@@ -9,22 +9,14 @@
 namespace App\Helpers;
 use Illuminate\Support\Collection;
 
-class DataSet
+class DataSet implements DataSetInterface
 {
     /** @var int  */
     private $total;
 
     /** @var  Collection */
     private $items;
-
-
-    public static function create(int $total, ?Collection $items): self
-    {
-        if(!$total) return new EmptyDataSet($total, $items);
-
-        return new self($total, $items);
-    }
-
+    
     /**
      * DataSet constructor.
      * @param int $total
