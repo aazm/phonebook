@@ -57,20 +57,6 @@ class MetaTest extends TestCase
         $this->assertEquals(\App\Record::count(), $data['records_count']);
     }
 
- /*   public function testMetaFileSizeEqualsToStoredOnFS()
-    {
-        $service = resolve(MetaServiceInterface::class);
-
-        $data = $service->get();
-
-        $expected = Storage::disk('local')->size($this->filepath);
-
-        var_dump($expected, $data);
-
-        $this->assertEquals($expected, $data['file_size']);
-    }*/
-
-
 
     public function testGatherPutCacheItem()
     {
@@ -79,16 +65,5 @@ class MetaTest extends TestCase
         Cache::shouldReceive('put')->once();
         $service->gather();
     }
-
-/*    public function testGatherFileNotFoundThrowsException()
-    {
-        $service = resolve(MetaServiceInterface::class);
-
-        $this->expectException(FileNotFoundException::class);
-
-        Storage::disk('local')->delete($this->filepath);
-
-        $service->gather();
-    }*/
 
 }
