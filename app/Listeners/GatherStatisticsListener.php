@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\ExportFileUpdatedEvent;
+use App\Services\MetaServiceInterface;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -26,6 +27,7 @@ class GatherStatisticsListener
      */
     public function handle(ExportFileUpdatedEvent $event)
     {
-        //
+        resolve(MetaServiceInterface::class)
+            ->gather();
     }
 }

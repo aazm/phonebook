@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\BookUpdatedEvent;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Cache;
 
 class ExportBookListener
 {
@@ -26,6 +27,6 @@ class ExportBookListener
      */
     public function handle(BookUpdatedEvent $event)
     {
-        //
+        Cache::put('should_export', true, now()->addMinutes(10));
     }
 }
