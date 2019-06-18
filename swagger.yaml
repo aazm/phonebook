@@ -1,0 +1,227 @@
+swagger: '2.0'
+
+info:
+  version: "v1"
+  title: REST API for 'PhoneBook'
+  description: |
+    The is a API for BhoneBook server. It contains description of all enpoints which server provides.
+
+basePath: /api
+paths:
+  /meta:
+    get:
+      summary: Show records page
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: name
+          type: string
+          description: Search name by like
+          required: false
+        - in: path
+          name: page
+          description: Page offset
+          required: false
+        - in: path
+          name: size
+          description: Items per page
+          required: false
+
+      responses:
+        200:
+          description: Response List
+          schema:
+            $ref: '#/definitions/RecordsResponse'
+        404:
+          description: No records found
+
+  /records:
+    get:
+      summary: Show records page
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: name
+          type: string
+          description: Search name by like
+          required: false
+        - in: path
+          name: page
+          description: Page offset
+          required: false
+        - in: path
+          name: size
+          description: Items per page
+          required: false
+
+      responses:
+        200:
+          description: Response List
+          schema:
+            $ref: '#/definitions/RecordsResponse'
+        404:
+          description: No records found
+
+    post:
+      summary: Create new record
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: subscriber
+          type: string
+          description: Subscriber name
+          required: true
+        - in: body
+          name: phone
+          type: string
+          description: Phone number
+          required: true
+
+      responses:
+        200:
+          description: Record was sucessully created
+          schema:
+            $ref: '#/definitions/RecordCreatedResponse'
+
+  /records/{id}:
+    get:
+      summary: Show model by id
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: subscriber
+          type: string
+          description: Subscriber name
+          required: true
+        - in: body
+          name: phone
+          type: string
+          description: Phone number
+          required: true
+
+      responses:
+        200:
+          description: Record was sucessully created
+          schema:
+            $ref: '#/definitions/RecordCreatedResponse'
+
+
+    put:
+      summary: Update existing record
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: subscriber
+          type: string
+          description: Subscriber name
+          required: true
+        - in: body
+          name: phone
+          type: string
+          description: Phone number
+          required: true
+
+      responses:
+        200:
+          description: Record was sucessully created
+          schema:
+            $ref: '#/definitions/RecordCreatedResponse'
+
+    delete:
+      summary: Delete existing record
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: subscriber
+          type: string
+          description: Subscriber name
+          required: true
+        - in: body
+          name: phone
+          type: string
+          description: Phone number
+          required: true
+
+      responses:
+        200:
+          description: Record was sucessully created
+          schema:
+            $ref: '#/definitions/RecordCreatedResponse'
+
+
+definitions:
+  Record:
+    type: object
+    properties:
+      id:
+        type: number
+        description: A unique identifier.
+      created_At:
+        type: string
+        description: Timestamp when object was created.
+      updated_at:
+        type: number
+        description: Timestamp when object was updated.
+      subscriber:
+        type: number
+        description: Subscriber name.
+      phone:
+        type: number
+        description: Phone number.
+  Meta:
+    type: object
+    properties:
+      records_count:
+        type: integer
+        description: Number of records in the database.
+      page_max_size:
+        type: number
+        description: Max page size.
+      filename:
+        type: number
+        description: Relative link on csv file.
+      file_size:
+        type: number
+        description: CSV file size.
+      updated_at:
+        type: number
+        description: Latest time when meta were gathered
+
+  RecordsResponse:
+    type: object
+    properties:
+      total:
+        type: integer
+      items:
+        type: array
+        items:
+          $ref: '#/definitions/Record'
+
+  RecordCreatedResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+        default: true
+      record:
+        type: object
+        $ref: '#/definitions/Record'
+
