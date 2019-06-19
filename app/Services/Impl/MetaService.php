@@ -20,12 +20,14 @@ class MetaService implements MetaServiceInterface
     const CACHE_KEY = 'meta';
 
     private $maxPageSize;
-    private $filepath;
+    private $filedir;
+    private $filename;
 
-    public function __construct(int $maxPageSize, string $filepath)
+    public function __construct(int $maxPageSize, string $filedir, string $filename)
     {
         $this->maxPageSize = $maxPageSize;
-        $this->filepath = $filepath;
+        $this->filedir = $filedir;
+        $this->filename = $filename;
     }
 
     public function get(): array
@@ -39,15 +41,17 @@ class MetaService implements MetaServiceInterface
 
     public function gather(): void
     {
-        if (!file_exists(storage_path('app/'.$this->filepath))) {
-            throw new FileNotFoundException('missing file ' . $this->filepath);
+        $path = $this->filedir . '/' . $this->filename;
+
+        if (!file_exists(storage_path('app/'.$path))) {
+            throw new FileNotFoundException('missing file ' . $path);
         }
 
         $meta = [
             'records_count' => Record::count(),
             'page_max_size' => $this->maxPageSize,
-            'filename' => $this->filepath,
-            'file_size' => filesize(storage_path('app/'.$this->filepath)),
+            'filename' => $this->filename,
+            'file_size' => filesize(storage_path('app/'.$this->filedir)),
             'updated_at' => \Carbon\Carbon::now(),
         ];
 
